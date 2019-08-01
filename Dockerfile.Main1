@@ -1,0 +1,9 @@
+FROM openjdk:8u222-jdk AS builder
+WORKDIR /app
+COPY Main1.java .
+RUN ["javac", "Main1.java"]
+
+FROM openjdk:8u222-jre
+WORKDIR /app
+COPY --from=builder /app/Main1.class .
+CMD ["java", "Main1"]

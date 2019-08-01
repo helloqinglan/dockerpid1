@@ -1,0 +1,12 @@
+FROM openjdk:8u222-jdk AS builder
+WORKDIR /app
+COPY Main3.java .
+RUN ["javac", "Main3.java"]
+
+FROM openjdk:8u222-jre
+RUN apt update && \
+    apt install -y procps && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=builder /app/Main3.class /
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
